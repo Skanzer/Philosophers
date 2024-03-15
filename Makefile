@@ -14,7 +14,7 @@ CC = cc
 
 CFLAGS = -Werror -Wall -Wextra -g
 
-THREAD = -lpthread
+THREAD = -pthread
 
 OBJS	:= ${FILENAMES:.c=.o}
 
