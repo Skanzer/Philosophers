@@ -7,10 +7,12 @@ time.c\
 init.c\
 threads.c\
 simulation.c\
+actions.c\
+monitoring.c\
 
 CC = cc
 
-CFLAGS = -Werror -Wall -Wextra
+CFLAGS = -Werror -Wall -Wextra -g
 
 THREAD = -lpthread
 

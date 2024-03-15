@@ -6,7 +6,7 @@
 /*   By: szerzeri <szerzeri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/15 17:51:21 by szerzeri          #+#    #+#             */
-/*   Updated: 2024/03/06 13:34:00 by szerzeri         ###   ########.fr       */
+/*   Updated: 2024/03/13 13:28:17 by szerzeri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,7 @@ void	free_memory(t_simulation *sim)
 		node = node->next;
 		free(tmp);
 		if (node == sim->philosophers)
-			break;
+			break ;
 	}
 }
 
@@ -81,9 +81,10 @@ void	print_action(t_philosopher *philosopher, t_philo_state state)
 	long int	timestamp;
 
 	pthread_mutex_lock(&philosopher->philo_mutex);
-	timestamp =  get_timestamp(philosopher->start_time);
-	printf("%ld %i ", timestamp, philosopher->index);
+	timestamp = get_timestamp(philosopher->start_time);
 	pthread_mutex_unlock(&philosopher->philo_mutex);
+	pthread_mutex_lock(philosopher->print_mutex);
+	printf("%ld %i ", timestamp, philosopher->index);
 	if (state == TAKING_FORK)
 		printf("%s\n", FORK);
 	else if (state == SLEEPING)
@@ -93,6 +94,9 @@ void	print_action(t_philosopher *philosopher, t_philo_state state)
 	else if (state == THINKING)
 		printf("%s\n", THINK);
 	else if (state == DIYING)
+	{
 		printf("%s\n", DIE);
+		return ;
+	}
+	pthread_mutex_unlock(philosopher->print_mutex);
 }
-

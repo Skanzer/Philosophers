@@ -6,7 +6,7 @@
 /*   By: szerzeri <szerzeri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/27 17:16:18 by szerzeri          #+#    #+#             */
-/*   Updated: 2024/03/06 11:03:56 by szerzeri         ###   ########.fr       */
+/*   Updated: 2024/03/13 13:11:30 by szerzeri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,7 @@ typedef struct s_philosopher
 	t_general				sim_data;
 	pthread_mutex_t			*right_fork;
 	pthread_mutex_t			*left_fork;
+	pthread_mutex_t			*print_mutex;
 	pthread_mutex_t			philo_mutex;
 	pthread_t				philo;
 	long int				last_meal;
@@ -68,6 +69,7 @@ typedef struct s_philosopher
 typedef struct s_simulation
 {
 	t_philosopher	*philosophers;
+	pthread_mutex_t	*print_mutex;
 	t_general		sim_data;
 	long int		start_time;
 	int				nb_finished;
@@ -101,7 +103,16 @@ int			init_mutexes(t_philosopher *philo);
 int			create_threads(t_simulation *simulation);
 int			join_threads(t_simulation *simulation);
 
+
 void		*begin_simulation(void *arg);
-void		sim_one_philo(t_philosopher *philosopher);
+int			check_exit(t_philosopher *philosopher);
+
+
+void		a_eat(t_philosopher *philosopher);
+void		a_sleep(t_philosopher *philosopher);
+void		a_think(t_philosopher *philosopher);
+
+void		monitor_philosophers(t_simulation *sim);
+void		set_exit(t_philosopher *first);
 
 #endif

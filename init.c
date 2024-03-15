@@ -6,7 +6,7 @@
 /*   By: szerzeri <szerzeri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/04 13:55:50 by szerzeri          #+#    #+#             */
-/*   Updated: 2024/03/05 18:42:25 by szerzeri         ###   ########.fr       */
+/*   Updated: 2024/03/13 11:22:52 by szerzeri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,6 +85,20 @@ void	add_philo_to_list(t_philosopher *philo, t_simulation *simulation)
 	}
 }
 
+int	simulation_struct(t_simulation *simulation, int argc, char **argv)
+{
+	simulation->nb_finished = 0;
+	simulation->start_time = 0;
+	simulation->philosophers = NULL;
+	take_input(&simulation->sim_data, argc, argv);
+	simulation->print_mutex = malloc(sizeof(pthread_mutex_t));
+	if (!simulation->print_mutex)
+		return (ALLOC_ERROR);
+	if (pthread_mutex_init(simulation->print_mutex, NULL) != SUCCESS)
+		return (MUTEX_ERROR);
+	return (SUCCESS);	
+}
+
 int	init_struct(t_simulation *simulation, int argc, char **argv)
 {
 	t_philosopher	*philo;
@@ -93,10 +107,9 @@ int	init_struct(t_simulation *simulation, int argc, char **argv)
 
 	i = 1;
 	ret = 0;
-	simulation->nb_finished = 0;
-	simulation->start_time = 0;
-	simulation->philosophers = NULL;
-	take_input(&simulation->sim_data, argc, argv);
+	ret = simulation_struct(simulation, argc, argv);
+	if (ret != SUCCESS)
+		return (ret);
 	while (i <= simulation->sim_data.nb_phi)
 	{
 		philo = malloc(sizeof(t_philosopher));
@@ -106,6 +119,7 @@ int	init_struct(t_simulation *simulation, int argc, char **argv)
 		ret = init_philo(philo, &simulation->sim_data);
 		if (ret != SUCCESS)
 			return (ret);
+		philo->print_mutex = simulation->print_mutex;
 		add_philo_to_list(philo, simulation);
 		if (simulation->sim_data.nb_phi == 1)
 			philo->next = philo;

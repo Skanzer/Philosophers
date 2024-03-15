@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   threads.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: szerzeri <szerzeri@student.42.fr>          +#+  +:+       +#+        */
+/*   By: szerzeri <szerzeri@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/05 12:07:33 by szerzeri          #+#    #+#             */
-/*   Updated: 2024/03/05 19:28:32 by szerzeri         ###   ########.fr       */
+/*   Updated: 2024/03/11 13:19:07 by szerzeri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ int	create_threads(t_simulation *simulation)
 			return (ret);
 		philosopher = philosopher->next;
 		if (philosopher == simulation->philosophers)
-			break;
+			break ;
 	}
 	return (ret);
 }
@@ -47,7 +47,7 @@ int	join_threads(t_simulation *simulation)
 			return (ret);
 		philosopher = philosopher->next;
 		if (philosopher == simulation->philosophers)
-			break;
+			break ;
 	}
 	return (ret);
 }
