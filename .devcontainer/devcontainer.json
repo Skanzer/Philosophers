@@ -12,7 +12,8 @@
           "extensions": [
               "GitHub.copilot",
               "kube.42header",
-              "ms-vscode.cpptools"
+              "ms-vscode.cpptools",
+              "lanza.lldb-vscode"
           ]
       }
   }
