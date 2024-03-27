@@ -3,6 +3,7 @@ NAME = philo
 FILENAMES = main.c\
 error_check.c\
 utils.c\
+utils1.c\
 time.c\
 init.c\
 threads.c\

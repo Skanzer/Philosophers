@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: szerzeri <szerzeri@student.42.fr>          +#+  +:+       +#+        */
+/*   By: codespace <codespace@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/15 17:51:21 by szerzeri          #+#    #+#             */
-/*   Updated: 2024/03/13 13:28:17 by szerzeri         ###   ########.fr       */
+/*   Updated: 2024/03/27 16:06:30 by codespace        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,6 +66,7 @@ void	free_memory(t_simulation *sim)
 	while (1)
 	{
 		pthread_mutex_destroy(node->left_fork);
+		pthread_mutex_destroy(&node->meal_mutex);
 		pthread_mutex_destroy(&node->philo_mutex);
 		free(node->left_fork);
 		tmp = node;
@@ -82,9 +83,9 @@ void	print_action(t_philosopher *philosopher, t_philo_state state)
 
 	pthread_mutex_lock(&philosopher->philo_mutex);
 	timestamp = get_timestamp(philosopher->start_time);
-	pthread_mutex_unlock(&philosopher->philo_mutex);
 	pthread_mutex_lock(philosopher->print_mutex);
 	printf("%ld %i ", timestamp, philosopher->index);
+	pthread_mutex_unlock(&philosopher->philo_mutex);
 	if (state == TAKING_FORK)
 		printf("%s\n", FORK);
 	else if (state == SLEEPING)

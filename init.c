@@ -3,26 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   init.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: szerzeri <szerzeri@student.42.fr>          +#+  +:+       +#+        */
+/*   By: codespace <codespace@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/04 13:55:50 by szerzeri          #+#    #+#             */
-/*   Updated: 2024/03/13 11:22:52 by szerzeri         ###   ########.fr       */
+/*   Updated: 2024/03/27 16:08:53 by codespace        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philosophers.h"
-
-void	take_input(t_general *input, int argc, char **argv)
-{
-	input->nb_phi = ft_atol(argv[1]);
-	input->t_d = ft_atol(argv[2]);
-	input->t_e = ft_atol(argv[3]);
-	input->t_s = ft_atol(argv[4]);
-	if (argc == 6)
-		input->nb_e = ft_atol(argv[5]);
-	else
-		input->nb_e = -1;
-}
 
 int	init_philo(t_philosopher *philo, t_general *input)
 {
@@ -47,6 +35,8 @@ int	init_philo(t_philosopher *philo, t_general *input)
 int	init_mutexes(t_philosopher *philo)
 {
 	if (pthread_mutex_init(&philo->philo_mutex, NULL) != SUCCESS)
+		return (MUTEX_ERROR);
+	if (pthread_mutex_init(&philo->meal_mutex, NULL) != SUCCESS)
 		return (MUTEX_ERROR);
 	philo->left_fork = malloc(sizeof(pthread_mutex_t));
 	if (!philo->left_fork)
@@ -96,7 +86,7 @@ int	simulation_struct(t_simulation *simulation, int argc, char **argv)
 		return (ALLOC_ERROR);
 	if (pthread_mutex_init(simulation->print_mutex, NULL) != SUCCESS)
 		return (MUTEX_ERROR);
-	return (SUCCESS);	
+	return (SUCCESS);
 }
 
 int	init_struct(t_simulation *simulation, int argc, char **argv)

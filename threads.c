@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   threads.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: szerzeri <szerzeri@student.42berlin.de>    +#+  +:+       +#+        */
+/*   By: codespace <codespace@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/05 12:07:33 by szerzeri          #+#    #+#             */
-/*   Updated: 2024/03/11 13:19:07 by szerzeri         ###   ########.fr       */
+/*   Updated: 2024/03/27 16:06:33 by codespace        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,8 @@ int	create_threads(t_simulation *simulation)
 	while (1)
 	{
 		philosopher->start_time = simulation->start_time;
-		ret = pthread_create(&philosopher->philo, NULL, begin_simulation, philosopher);
+		ret = pthread_create(&philosopher->philo, NULL, \
+		begin_simulation, philosopher);
 		if (ret != 0)
 			return (ret);
 		philosopher = philosopher->next;

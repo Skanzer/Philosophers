@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   simulation.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: szerzeri <szerzeri@student.42.fr>          +#+  +:+       +#+        */
+/*   By: codespace <codespace@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/06 11:03:24 by szerzeri          #+#    #+#             */
-/*   Updated: 2024/03/13 16:51:56 by szerzeri         ###   ########.fr       */
+/*   Updated: 2024/03/27 16:10:56 by codespace        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,7 @@ static void	sim_one_philo(t_philosopher *philosopher)
 	pthread_mutex_lock(philosopher->left_fork);
 	print_action(philosopher, TAKING_FORK);
 	wait_duration(philosopher->sim_data.t_d);
+	print_action(philosopher, DIYING);
 	pthread_mutex_unlock(philosopher->left_fork);
 }
 
@@ -68,8 +69,6 @@ void	*begin_simulation(void *arg)
 	pthread_mutex_unlock(&philosopher->philo_mutex);
 	if (philosopher->sim_data.nb_phi == 1)
 		sim_one_philo(philosopher);
-	/*else if (philosopher->sim_data.nb_phi == 3)
-		sim_three_philo(philosopher);*/
 	else
 		sim_philo(philosopher);
 	return (NULL);

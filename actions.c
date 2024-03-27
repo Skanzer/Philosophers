@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   actions.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: szerzeri <szerzeri@student.42.fr>          +#+  +:+       +#+        */
+/*   By: codespace <codespace@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/11 13:06:51 by szerzeri          #+#    #+#             */
-/*   Updated: 2024/03/13 18:14:46 by szerzeri         ###   ########.fr       */
+/*   Updated: 2024/03/27 16:07:31 by codespace        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,23 +14,29 @@
 
 void	fork_lock(t_philosopher *philosopher)
 {
+	pthread_mutex_lock(&philosopher->philo_mutex);
+	if (philosopher->exit == 1)
+	{
+		pthread_mutex_unlock(&philosopher->philo_mutex);
+		return ;
+	}
 	if (philosopher->index % 2 == 0)
 	{
 		pthread_mutex_lock(philosopher->left_fork);
-		pthread_mutex_lock(philosopher->right_fork);	
+		pthread_mutex_lock(philosopher->right_fork);
 	}
 	else
 	{
 		pthread_mutex_lock(philosopher->right_fork);
 		pthread_mutex_lock(philosopher->left_fork);
 	}
-	
+	pthread_mutex_unlock(&philosopher->philo_mutex);
 }
 
 void	fork_unlock(t_philosopher *philosopher)
 {
 	pthread_mutex_unlock(philosopher->left_fork);
-	pthread_mutex_unlock(philosopher->right_fork);	
+	pthread_mutex_unlock(philosopher->right_fork);
 }
 
 void	a_eat(t_philosopher *philosopher)
@@ -38,14 +44,7 @@ void	a_eat(t_philosopher *philosopher)
 	if (check_exit(philosopher) == 1)
 		return ;
 	fork_lock(philosopher);
-	print_action(philosopher, TAKING_FORK);
-	print_action(philosopher, TAKING_FORK);
-	print_action(philosopher, EATING);
-	pthread_mutex_lock(&philosopher->philo_mutex);
-	philosopher->last_meal = time_in_ms();
-	if (philosopher->sim_data.nb_e != -1)
-		philosopher->eat_count++;
-	pthread_mutex_unlock(&philosopher->philo_mutex);
+	print_eat(philosopher);
 	wait_duration(philosopher->sim_data.t_e);
 	fork_unlock(philosopher);
 }

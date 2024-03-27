@@ -3,37 +3,60 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: szerzeri <szerzeri@student.42.fr>          +#+  +:+       +#+        */
+/*   By: codespace <codespace@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/27 17:13:49 by szerzeri          #+#    #+#             */
-/*   Updated: 2024/03/13 16:19:07 by szerzeri         ###   ########.fr       */
+/*   Updated: 2024/03/27 16:09:18 by codespace        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philosophers.h"
 
+static void	exit_sim(t_simulation *sim)
+{
+	free_memory(sim);
+	pthread_mutex_destroy(sim->print_mutex);
+	free(sim->print_mutex);
+}
+
+static int	init_sim(t_simulation *sim, int argc, char **argv)
+{
+	int	ret;
+
+	ret = init_struct(sim, argc, argv);
+	if (ret != SUCCESS)
+	{
+		display_error(ret);
+		exit_sim(sim);
+		return (1);
+	}
+	ret = create_threads(sim);
+	if (ret != SUCCESS)
+	{
+		display_error(ret);
+		exit_sim(sim);
+		return (1);
+	}
+	return (0);
+}
+
 int	main(int argc, char **argv)
 {
 	t_simulation		simulation;
-	int					ret;
 
 	if (check_error(argc, argv) == 1)
 	{
 		printf("Error: Wrong arguments !!\n");
 		return (0);
 	}
-	ret = init_struct(&simulation, argc, argv);
-	if (ret != SUCCESS)
+	if (init_sim(&simulation, argc, argv) != 0)
+		return (0);
+	if (simulation.sim_data.nb_phi != 1)
 	{
-		display_error(ret);
-		return (free_memory(&simulation), 0);
+		monitor_philosophers(&simulation);
+		pthread_mutex_unlock(simulation.print_mutex);
 	}
-	ret = create_threads(&simulation);
-	if (ret != SUCCESS)
-		return(0);
-	monitor_philosophers(&simulation);
-	pthread_mutex_unlock(simulation.print_mutex);
-	ret = join_threads(&simulation);
-	free_memory(&simulation);
+	join_threads(&simulation);
+	exit_sim(&simulation);
 	return (0);
 }
