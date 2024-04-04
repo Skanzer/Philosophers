@@ -6,7 +6,7 @@
 /*   By: codespace <codespace@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/11 13:06:51 by szerzeri          #+#    #+#             */
-/*   Updated: 2024/03/27 16:07:31 by codespace        ###   ########.fr       */
+/*   Updated: 2024/04/04 10:20:45 by codespace        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,4 +62,5 @@ void	a_think(t_philosopher *philosopher)
 	if (check_exit(philosopher) == 1)
 		return ;
 	print_action(philosopher, THINKING);
+	wait_duration(1);
 }
