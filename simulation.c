@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   simulation.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: codespace <codespace@student.42.fr>        +#+  +:+       +#+        */
+/*   By: szerzeri <szerzeri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/06 11:03:24 by szerzeri          #+#    #+#             */
-/*   Updated: 2024/03/27 16:10:56 by codespace        ###   ########.fr       */
+/*   Updated: 2024/04/04 17:05:19 by szerzeri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,8 +29,9 @@ static void	sim_one_philo(t_philosopher *philosopher)
 	pthread_mutex_lock(philosopher->left_fork);
 	print_action(philosopher, TAKING_FORK);
 	wait_duration(philosopher->sim_data.t_d);
-	print_action(philosopher, DIYING);
 	pthread_mutex_unlock(philosopher->left_fork);
+	print_action(philosopher, DIYING);
+	pthread_mutex_unlock(philosopher->print_mutex);
 }
 
 static void	sim_philo(t_philosopher *philosopher)
@@ -64,9 +65,9 @@ void	*begin_simulation(void *arg)
 	t_philosopher	*philosopher;
 
 	philosopher = (t_philosopher *)arg;
-	pthread_mutex_lock(&philosopher->philo_mutex);
+	pthread_mutex_lock(&philosopher->meal_mutex);
 	philosopher->last_meal = time_in_ms();
-	pthread_mutex_unlock(&philosopher->philo_mutex);
+	pthread_mutex_unlock(&philosopher->meal_mutex);
 	if (philosopher->sim_data.nb_phi == 1)
 		sim_one_philo(philosopher);
 	else

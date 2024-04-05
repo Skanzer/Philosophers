@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   monitoring.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: codespace <codespace@student.42.fr>        +#+  +:+       +#+        */
+/*   By: szerzeri <szerzeri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/13 11:33:17 by szerzeri          #+#    #+#             */
-/*   Updated: 2024/03/27 16:09:58 by codespace        ###   ########.fr       */
+/*   Updated: 2024/04/04 15:54:00 by szerzeri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,9 @@ static int	check_die(t_philosopher *philosopher)
 	pthread_mutex_lock(&philosopher->meal_mutex);
 	if (get_timestamp(philosopher->last_meal) > philosopher->sim_data.t_d)
 	{
+		pthread_mutex_lock(&philosopher->philo_mutex);
 		philosopher->exit = 1;
+		pthread_mutex_unlock(&philosopher->philo_mutex);
 		pthread_mutex_unlock(&philosopher->meal_mutex);
 		return (1);
 	}
@@ -43,10 +45,10 @@ static int	check_die(t_philosopher *philosopher)
 
 static int	check_eat_count(t_philosopher *philosopher, t_simulation *sim)
 {
-	pthread_mutex_lock(&philosopher->philo_mutex);
+	pthread_mutex_lock(&philosopher->eat_count_mutex);
 	if (philosopher->eat_count == sim->sim_data.nb_e)
 		sim->nb_finished++;
-	pthread_mutex_unlock(&philosopher->philo_mutex);
+	pthread_mutex_unlock(&philosopher->eat_count_mutex);
 	if (sim->nb_finished == sim->sim_data.nb_e)
 	{
 		pthread_mutex_lock(sim->print_mutex);

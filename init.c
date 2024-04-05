@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: codespace <codespace@student.42.fr>        +#+  +:+       +#+        */
+/*   By: szerzeri <szerzeri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/04 13:55:50 by szerzeri          #+#    #+#             */
-/*   Updated: 2024/03/27 16:08:53 by codespace        ###   ########.fr       */
+/*   Updated: 2024/04/04 15:53:17 by szerzeri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,8 @@ int	init_mutexes(t_philosopher *philo)
 	if (pthread_mutex_init(&philo->philo_mutex, NULL) != SUCCESS)
 		return (MUTEX_ERROR);
 	if (pthread_mutex_init(&philo->meal_mutex, NULL) != SUCCESS)
+		return (MUTEX_ERROR);
+	if (pthread_mutex_init(&philo->eat_count_mutex, NULL) != SUCCESS)
 		return (MUTEX_ERROR);
 	philo->left_fork = malloc(sizeof(pthread_mutex_t));
 	if (!philo->left_fork)

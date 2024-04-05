@@ -13,7 +13,7 @@ monitoring.c\
 
 CC = cc
 
-CFLAGS = -Werror -Wall -Wextra -g
+CFLAGS = -Werror -Wall -Wextra
 
 THREAD = -pthread
 

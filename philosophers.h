@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philosophers.h                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: codespace <codespace@student.42.fr>        +#+  +:+       +#+        */
+/*   By: szerzeri <szerzeri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/27 17:16:18 by szerzeri          #+#    #+#             */
-/*   Updated: 2024/03/27 16:06:35 by codespace        ###   ########.fr       */
+/*   Updated: 2024/04/04 17:27:13 by szerzeri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,6 +59,7 @@ typedef struct s_philosopher
 	pthread_mutex_t			*print_mutex;
 	pthread_mutex_t			philo_mutex;
 	pthread_mutex_t			meal_mutex;
+	pthread_mutex_t			eat_count_mutex;
 	pthread_t				philo;
 	long int				last_meal;
 	long int				start_time;
@@ -108,6 +109,8 @@ int			check_exit(t_philosopher *philosopher);
 void		a_eat(t_philosopher *philosopher);
 void		a_sleep(t_philosopher *philosopher);
 void		a_think(t_philosopher *philosopher);
+void		fork_unlock(t_philosopher *philosopher);
+void		fork_lock(t_philosopher *philosopher);
 //////////////////////////////////////////////////////////////////////////
 void		monitor_philosophers(t_simulation *sim);
 void		set_exit(t_philosopher *first);
